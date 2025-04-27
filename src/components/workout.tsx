@@ -68,7 +68,7 @@ const Workout = () => {
         // Need to update order here
         order: 1,
       };
-      const addedExercise = await fetch(
+      await fetch(
         `http://localhost:3000/workout_exercises`,
         { method: "POST", body: JSON.stringify(exercise) }
       );
@@ -90,7 +90,7 @@ const Workout = () => {
 
   const removeExercise = async (workoutExerciseId: string) => {
     if (workout && workoutExerciseId) {
-      const removedExercise = await fetch(
+      await fetch(
         `http://localhost:3000/workout_exercises/${workoutExerciseId}`,
         { method: "DELETE" }
       );
