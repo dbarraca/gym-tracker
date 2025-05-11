@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { WorkoutExercise } from "../types/workout";
+import { trackerUrl } from "../backend";
 
 const Sets = ({
   workoutExerciseCurrent,

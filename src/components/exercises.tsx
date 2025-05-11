@@ -4,7 +4,6 @@ import { Exercise as ExerciseType } from "../types/workout";
 import api from "../api";
 import { trackerUrl } from "../backend";
 
-
 const Exercises = () => {
   const [exercises, setExercises] = useState<ExerciseType[]>([]);
 
