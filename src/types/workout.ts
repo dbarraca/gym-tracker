@@ -1,6 +1,7 @@
 export interface Workout {
-    id: string;
+    id: number;
     name: string;
+    created_at: string
 };
 
 export interface Exercise {

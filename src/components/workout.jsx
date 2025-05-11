@@ -1,38 +1,34 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import {
-  Workout as WorkoutType,
-  WorkoutExercise,
-  Exercise,
-} from "../types/workout";
 import api from "../api";
 import Sets from "./sets";
 import Reps from "./reps";
 import { trackerUrl } from "../backend";
+import supabase from "../../supabase";
 
 const Workout = () => {
-  const [workout, setWorkout] = useState<WorkoutType>();
-  const [workoutExercises, setWorkoutExercises] = useState<WorkoutExercise[]>();
-  const [exercises, setExercises] = useState<Exercise[]>([]);
-  const [exerciseToAdd, setExerciseToAdd] = useState<Exercise>();
+  const [workout, setWorkout] = useState();
+  const [workoutExercises, setWorkoutExercises] = useState();
+  const [exercises, setExercises] = useState([]);
+  const [exerciseToAdd, setExerciseToAdd] = useState();
 
   const { workoutId } = useParams();
 
   useEffect(() => {
     const fetchWorkout = async () => {
-      const workoutResponse = await api.get<WorkoutType>(
-        `${trackerUrl}/workouts/${workoutId}`
-      );
-      if (workoutResponse) {
-        setWorkout(workoutResponse);
+      const { data, error } = await supabase
+        .from("Workout")
+        .select("*")
+        .eq("id", workoutId);
+      if (data) {
+        console.log("data", data);
+        setWorkout(data);
       }
     };
     fetchWorkout();
 
     const fetchExercises = async () => {
-      const exercisesResponse = await api.get<Exercise[]>(
-        `${trackerUrl}/exercises`
-      );
+      const exercisesResponse = await api.get(`${trackerUrl}/exercises`);
       if (exercisesResponse) {
         setExercises(exercisesResponse);
       }
@@ -45,7 +41,7 @@ const Workout = () => {
     // ToDo: Refactor to use api service later if valuable
     const fetchWorkoutExercises = async () => {
       if (workout?.id) {
-        const workoutExercisesResponse = await api.get<WorkoutExercise[]>(
+        const workoutExercisesResponse = await api.get(
           `${trackerUrl}/workout_exercises?workout_id=${workout.id}`
         );
         if (workoutExercisesResponse) {
@@ -69,15 +65,15 @@ const Workout = () => {
         // Need to update order here
         order: 1,
       };
-      await fetch(
-        `${trackerUrl}/workout_exercises`,
-        { method: "POST", body: JSON.stringify(exercise) }
-      );
+      await fetch(`${trackerUrl}/workout_exercises`, {
+        method: "POST",
+        body: JSON.stringify(exercise),
+      });
     }
   };
 
   const handleExerciseChange = useCallback(
-    (e: React.ChangeEvent<HTMLSelectElement>) => {
+    (e) => {
       if (e?.target?.value && exercises) {
         const id = e.target.value;
         const exercise = exercises.find((exer) => exer.id === id.toString());
@@ -89,19 +85,15 @@ const Workout = () => {
     [exercises]
   );
 
-  const removeExercise = async (workoutExerciseId: string) => {
+  const removeExercise = async (workoutExerciseId) => {
     if (workout && workoutExerciseId) {
-      await fetch(
-        `${trackerUrl}/workout_exercises/${workoutExerciseId}`,
-        { method: "DELETE" }
-      );
+      await fetch(`${trackerUrl}/workout_exercises/${workoutExerciseId}`, {
+        method: "DELETE",
+      });
     }
   };
 
-  const sortExercise = (
-    exerciseA: WorkoutExercise,
-    exerciseB: WorkoutExercise
-  ) => {
+  const sortExercise = (exerciseA, exerciseB) => {
     return exerciseB.order - exerciseA.order;
   };
 

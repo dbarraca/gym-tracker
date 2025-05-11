@@ -1,18 +1,17 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router";
-import { Workout } from "../types/workout";
-import { trackerUrl } from "../backend";
+import supabase from "../../supabase";
 
 const WorkoutList = () => {
-  const [workouts, setWorkouts] = useState<Workout[]>([]);
+  const [workouts, setWorkouts] = useState([]);
 
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
-        const response = await fetch(`${trackerUrl}/workouts`);
-        const data = await response.json();
-        console.log("data", data);
-        setWorkouts(data);
+        const {data} = await supabase.from("Workout").select("*");
+        if (data) {
+          setWorkouts(data);
+        }
       } catch (error) {
         console.error("Error fetching workouts:", error);
       }
@@ -20,19 +19,23 @@ const WorkoutList = () => {
 
     fetchWorkouts();
   }, []);
- 
+
   return (
     <div className="text-left min-w-sm">
       <div className="pb-3">
         <h1>Workouts</h1>
         {workouts.map((workout) => (
           <div key={workout.id}>
-              <NavLink to={`/workouts/${workout.id}`} className="block text-xl rounded-md w-full p-3 text-black hover:bg-gray-50">{workout.name}</NavLink>
+            <NavLink
+              to={`/workouts/${workout.id}`}
+              className="block text-xl rounded-md w-full p-3 text-black hover:bg-gray-50"
+            >
+              {workout.name}
+            </NavLink>
           </div>
         ))}
       </div>
       <NavLink to={`/exercises`}>Exercise List</NavLink>
-
     </div>
   );
 };
