@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import Sets from "./sets";
 import Reps from "./reps";
-import supabase from "../../supabase";
+import supabase from "../supabase";
 
 const Workout = () => {
   const [workout, setWorkout] = useState();

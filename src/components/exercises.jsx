@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import ExerciseItem from "./exercise-item";
-import supabase from "../../supabase";
+import supabase from "../supabase";
 
 const Exercises = () => {
   const [exercises, setExercises] = useState([]);

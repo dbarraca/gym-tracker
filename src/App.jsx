@@ -1,23 +1,32 @@
 import "./App.css";
+import "./index.css";
+import { useState, useEffect } from "react";
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+import supabase from './supabase';
+import Routing from "./components/routing";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import WorkoutList from "./components/workout-list";
-import Workout from "./components/workout";
-import Exercises from "./components/exercises";
 
-function App() {
-  return (
-    <div className="bg-white text-black h-full w-full">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<WorkoutList />} />
-          <Route path="/workouts" element={<WorkoutList />} />
-          <Route path="/workouts/:workoutId" element={<Workout />} />
-          <Route path="/exercises" element={<Exercises />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
+export default function App() {
+  const [session, setSession] = useState(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  if (!session) {
+    return <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />;
+  } else {
+    return <Routing />;
+  }
 }
-
-export default App;

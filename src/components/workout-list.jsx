@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router";
-import supabase from "../../supabase";
+import supabase from "../supabase";
 
 const WorkoutList = () => {
   const [workouts, setWorkouts] = useState([]);
