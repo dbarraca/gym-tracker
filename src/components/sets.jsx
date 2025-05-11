@@ -1,28 +1,22 @@
 import { useState } from "react";
-import { WorkoutExercise } from "../types/workout";
-import { trackerUrl } from "../backend";
 
-const Sets = ({
-  workoutExerciseCurrent,
-}: {
-  workoutExerciseCurrent: WorkoutExercise;
-}) => {
+const Sets = ({ workoutExerciseCurrent }) => {
   const [editing, setEditing] = useState(false);
   const [sets, setSets] = useState(workoutExerciseCurrent.sets);
 
   const updateSets = async () => {
-    const workoutExercise = { ...workoutExerciseCurrent, sets };
-    const updatedWorkoutExercise = await fetch(
-      `${trackerUrl}/workout_exercises/${workoutExerciseCurrent.id}`,
-      { method: "PUT", body: JSON.stringify(workoutExercise) }
-    );
-    if (updatedWorkoutExercise) {
-      setEditing(false);
-      console.log("updatedWorkoutExercise", updatedWorkoutExercise);
-    }
+    // const workoutExercise = { ...workoutExerciseCurrent, sets };
+    // const updatedWorkoutExercise = await fetch(
+    //   `${trackerUrl}/workout_exercises/${workoutExerciseCurrent.id}`,
+    //   { method: "PUT", body: JSON.stringify(workoutExercise) }
+    // );
+    // if (updatedWorkoutExercise) {
+    //   setEditing(false);
+    //   console.log("updatedWorkoutExercise", updatedWorkoutExercise);
+    // }
   };
 
-  const handleSetsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSetsChange = (e) => {
     const newSets = e?.target?.value;
     if (newSets) {
       const newSetsNum = parseInt(newSets);

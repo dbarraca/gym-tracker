@@ -8,7 +8,7 @@ const WorkoutList = () => {
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
-        const {data} = await supabase.from("Workout").select("*");
+        const {data} = await supabase.from("workouts").select("*");
         if (data) {
           setWorkouts(data);
         }

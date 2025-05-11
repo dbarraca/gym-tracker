@@ -1,9 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import api from "../api";
 import Sets from "./sets";
 import Reps from "./reps";
-import { trackerUrl } from "../backend";
 import supabase from "../../supabase";
 
 const Workout = () => {
@@ -17,20 +15,20 @@ const Workout = () => {
   useEffect(() => {
     const fetchWorkout = async () => {
       const { data, error } = await supabase
-        .from("Workout")
+        .from("workouts")
         .select("*")
-        .eq("id", workoutId);
+        .eq("id", workoutId)
+        .maybeSingle();
       if (data) {
-        console.log("data", data);
         setWorkout(data);
       }
     };
     fetchWorkout();
 
     const fetchExercises = async () => {
-      const exercisesResponse = await api.get(`${trackerUrl}/exercises`);
-      if (exercisesResponse) {
-        setExercises(exercisesResponse);
+      const { data, error } = await supabase.from("exercises").select("*");
+      if (data) {
+        setExercises(data);
       }
     };
 
@@ -38,14 +36,22 @@ const Workout = () => {
   }, []);
 
   useEffect(() => {
-    // ToDo: Refactor to use api service later if valuable
     const fetchWorkoutExercises = async () => {
       if (workout?.id) {
-        const workoutExercisesResponse = await api.get(
-          `${trackerUrl}/workout_exercises?workout_id=${workout.id}`
-        );
-        if (workoutExercisesResponse) {
-          setWorkoutExercises(workoutExercisesResponse);
+        const { data } = await supabase
+          // .from("exercises")
+          // .select(
+          //   "id, name, workout_exercises (id, workout_id, exercise_id, exercise_type_id, order)"
+          // )
+          // .eq("workout_exercises.workout_id", workout?.id)
+          .from("workout_exercises")
+          .select(
+            "id, workout_id, exercise_id, exercise_type_id, sets, reps, time, done, order, exercises (name)"
+          )
+          .eq("workout_id", workout?.id)
+          .order("order");
+        if (data) {
+          setWorkoutExercises(data);
         }
       }
     };
@@ -65,10 +71,13 @@ const Workout = () => {
         // Need to update order here
         order: 1,
       };
-      await fetch(`${trackerUrl}/workout_exercises`, {
-        method: "POST",
-        body: JSON.stringify(exercise),
-      });
+      const { error } = await supabase
+        .from("workout_exercises")
+        .insert(exercise);
+
+      if (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -76,7 +85,7 @@ const Workout = () => {
     (e) => {
       if (e?.target?.value && exercises) {
         const id = e.target.value;
-        const exercise = exercises.find((exer) => exer.id === id.toString());
+        const exercise = exercises.find((exer) => exer.id === parseInt(id));
         if (exercise) {
           setExerciseToAdd(exercise);
         }
@@ -86,11 +95,11 @@ const Workout = () => {
   );
 
   const removeExercise = async (workoutExerciseId) => {
-    if (workout && workoutExerciseId) {
-      await fetch(`${trackerUrl}/workout_exercises/${workoutExerciseId}`, {
-        method: "DELETE",
-      });
-    }
+    // if (workout && workoutExerciseId) {
+    //   await fetch(`${trackerUrl}/workout_exercises/${workoutExerciseId}`, {
+    //     method: "DELETE",
+    //   });
+    // }
   };
 
   const sortExercise = (exerciseA, exerciseB) => {
@@ -129,6 +138,7 @@ const Workout = () => {
           className="flex-1 mr-5"
           onChange={(e) => handleExerciseChange(e)}
         >
+          <option value="" />
           {exercises.map((exercise) => (
             <option key={exercise.id} value={exercise.id}>
               {exercise.name}
