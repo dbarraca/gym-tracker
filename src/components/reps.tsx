@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { WorkoutExercise } from "../types/workout";
+import { trackerUrl } from "../backend";
 
 const Reps = ({
   workoutExerciseCurrent,
@@ -12,7 +13,7 @@ const Reps = ({
   const updateReps = async () => {
     const workoutExercise = { ...workoutExerciseCurrent, reps };
     const updatedWorkoutExercise = await fetch(
-      `http://localhost:3000/workout_exercises/${workoutExerciseCurrent.id}`,
+      `${trackerUrl}/workout_exercises/${workoutExerciseCurrent.id}`,
       { method: "PUT", body: JSON.stringify(workoutExercise) }
     );
     if (updatedWorkoutExercise) {

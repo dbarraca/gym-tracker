@@ -8,6 +8,7 @@ import {
 import api from "../api";
 import Sets from "./sets";
 import Reps from "./reps";
+import { trackerUrl } from "../backend";
 
 const Workout = () => {
   const [workout, setWorkout] = useState<WorkoutType>();
@@ -20,7 +21,7 @@ const Workout = () => {
   useEffect(() => {
     const fetchWorkout = async () => {
       const workoutResponse = await api.get<WorkoutType>(
-        `http://localhost:3000/workouts/${workoutId}`
+        `${trackerUrl}/workouts/${workoutId}`
       );
       if (workoutResponse) {
         setWorkout(workoutResponse);
@@ -30,7 +31,7 @@ const Workout = () => {
 
     const fetchExercises = async () => {
       const exercisesResponse = await api.get<Exercise[]>(
-        `http://localhost:3000/exercises`
+        `${trackerUrl}/exercises`
       );
       if (exercisesResponse) {
         setExercises(exercisesResponse);
@@ -45,7 +46,7 @@ const Workout = () => {
     const fetchWorkoutExercises = async () => {
       if (workout?.id) {
         const workoutExercisesResponse = await api.get<WorkoutExercise[]>(
-          `http://localhost:3000/workout_exercises?workout_id=${workout.id}`
+          `${trackerUrl}/workout_exercises?workout_id=${workout.id}`
         );
         if (workoutExercisesResponse) {
           setWorkoutExercises(workoutExercisesResponse);
@@ -69,7 +70,7 @@ const Workout = () => {
         order: 1,
       };
       await fetch(
-        `http://localhost:3000/workout_exercises`,
+        `${trackerUrl}/workout_exercises`,
         { method: "POST", body: JSON.stringify(exercise) }
       );
     }
@@ -91,7 +92,7 @@ const Workout = () => {
   const removeExercise = async (workoutExerciseId: string) => {
     if (workout && workoutExerciseId) {
       await fetch(
-        `http://localhost:3000/workout_exercises/${workoutExerciseId}`,
+        `${trackerUrl}/workout_exercises/${workoutExerciseId}`,
         { method: "DELETE" }
       );
     }

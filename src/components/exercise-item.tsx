@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Exercise as ExerciseType } from "../types/workout";
+import { trackerUrl } from "../backend";
 
 const ExerciseItem = ({
   exerciseCurrent,
@@ -11,7 +12,7 @@ const ExerciseItem = ({
 
   const updateName = async () => {
     const updatedExercise = await fetch(
-      `http://localhost:3000/exercises/${exercise.id}`,
+      `${trackerUrl}/exercises/${exercise.id}`,
       { method: "PUT", body: JSON.stringify(exercise) }
     );
     if (updatedExercise) {

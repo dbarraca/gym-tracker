@@ -12,7 +12,7 @@ const Sets = ({
   const updateSets = async () => {
     const workoutExercise = { ...workoutExerciseCurrent, sets };
     const updatedWorkoutExercise = await fetch(
-      `http://localhost:3000/workout_exercises/${workoutExerciseCurrent.id}`,
+      `${trackerUrl}/workout_exercises/${workoutExerciseCurrent.id}`,
       { method: "PUT", body: JSON.stringify(workoutExercise) }
     );
     if (updatedWorkoutExercise) {

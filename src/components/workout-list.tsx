@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router";
 import { Workout } from "../types/workout";
+import { trackerUrl } from "../backend";
 
 const WorkoutList = () => {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
@@ -8,7 +9,7 @@ const WorkoutList = () => {
   useEffect(() => {
     const fetchWorkouts = async () => {
       try {
-        const response = await fetch("http://localhost:3000/workouts");
+        const response = await fetch(`${trackerUrl}/workouts`);
         const data = await response.json();
         console.log("data", data);
         setWorkouts(data);

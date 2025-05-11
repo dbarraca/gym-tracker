@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import ExerciseItem from "./exercise-item";
 import { Exercise as ExerciseType } from "../types/workout";
 import api from "../api";
+import { trackerUrl } from "../backend";
+
 
 const Exercises = () => {
   const [exercises, setExercises] = useState<ExerciseType[]>([]);
@@ -10,14 +12,14 @@ const Exercises = () => {
     // ToDo: Refactor to use api service later if valuable
     const fetchExercises = async () => {
       const exercisesResponse = await api.get<ExerciseType[]>(
-        `http://localhost:3000/exercises`
+        `${trackerUrl}/exercises`
       );
       if (exercisesResponse) {
         setExercises(exercisesResponse);
       }
       //   try {
       //     const response = await fetch(
-      //       `http://localhost:3000/exercises/${exerciseId}`
+      //       `${trackerUrl}/exercises/${exerciseId}`
       //     );
       //     const data = await response.json();
       //     setExercise(data);`
@@ -33,7 +35,7 @@ const Exercises = () => {
     const exerciseToAdd = {
       name: "Exercise",
     };
-    const addedExercise = await fetch(`http://localhost:3000/exercises`, {
+    const addedExercise = await fetch(`${trackerUrl}/exercises`, {
       method: "POST",
       body: JSON.stringify(exerciseToAdd),
     });
