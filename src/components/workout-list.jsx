@@ -21,7 +21,7 @@ const WorkoutList = () => {
   }, []);
 
   return (
-    <div className="text-left min-w-sm">
+    <div className="text-left md:min-w-sm">
       <div className="pb-3">
         <h1>Workouts</h1>
         {workouts.map((workout) => (

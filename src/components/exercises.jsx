@@ -36,7 +36,7 @@ const Exercises = () => {
   };
 
   return exercises ? (
-    <div className="min-w-sm">
+    <div className="md:min-w-sm">
       <h1 className="text-left">Exercises</h1>
       <div className="pb-3">
         {exercises.map((exercise) => (

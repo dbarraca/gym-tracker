@@ -107,7 +107,7 @@ const Workout = () => {
   };
 
   return workout ? (
-    <div className="text-left min-w-sm">
+    <div className="text-left h-full md:min-w-sm flex flex-col items-start md:justify-center ">
       <h1 className="text-left pb-2">{workout.name}</h1>
       {exercises &&
         workoutExercises?.sort(sortExercise)?.map((workoutExercise) => (
