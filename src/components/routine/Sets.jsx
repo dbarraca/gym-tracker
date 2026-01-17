@@ -1,18 +1,18 @@
 import { useState } from "react";
 
-const Sets = ({ workoutExerciseCurrent }) => {
+const Sets = ({ routineExerciseCurrent }) => {
   const [editing, setEditing] = useState(false);
-  const [sets, setSets] = useState(workoutExerciseCurrent.sets);
+  const [sets, setSets] = useState(routineExerciseCurrent.sets);
 
   const updateSets = async () => {
-    // const workoutExercise = { ...workoutExerciseCurrent, sets };
-    // const updatedWorkoutExercise = await fetch(
-    //   `${trackerUrl}/workout_exercises/${workoutExerciseCurrent.id}`,
-    //   { method: "PUT", body: JSON.stringify(workoutExercise) }
+    // const routineExercise = { ...routineExerciseCurrent, sets };
+    // const updatedRoutineExercise = await fetch(
+    //   `${trackerUrl}/routine_exercises/${routineExerciseCurrent.id}`,
+    //   { method: "PUT", body: JSON.stringify(routineExercise) }
     // );
-    // if (updatedWorkoutExercise) {
+    // if (updatedRoutineExercise) {
     //   setEditing(false);
-    //   console.log("updatedWorkoutExercise", updatedWorkoutExercise);
+    //   console.log("updatedRoutineExercise", updatedRoutineExercise);
     // }
   };
 
@@ -34,7 +34,7 @@ const Sets = ({ workoutExerciseCurrent }) => {
     />
   ) : (
     <div
-      className="p-2 hover:bg-gray-50 rounded-sm p-1 my-1 w-10"
+      className="p-1 hover:bg-gray-200 rounded-sm p-1 my-1 w-10"
       onClick={() => setEditing(true)}
     >
       {sets}

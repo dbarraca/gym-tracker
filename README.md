@@ -1,16 +1,16 @@
 # Gym Tracker
 
 ## Draft 1: Simple Lists
-- [X] List of Work outs
+- [X] List of Routines
   - [ ] Add work out
-  - [ ] Remove workout
-  - [ ] Edit workout name
+  - [ ] Remove routine
+  - [ ] Edit routine name
 - [X] List of all exercises in system
   - [X] Add exercise item
   - [ ] Remove exercise
   - [X] Edit exercise name
-- [x] List of excerises in workout
-  - [ ] Add exercise to workout
+- [x] List of excerises in routine
+  - [ ] Add exercise to routine
   - [ ] Edit type of excerise: sets/reps vs time vs done/not done
   - [ ] Edit number of sets per exercise
   - [ ] Edit number of reps per exercise
@@ -29,7 +29,7 @@
 - [ ] Color code improvements: green, yellow, red
 
 ## Draft 3: Journal
-- [ ] Add notes per workout log
+- [ ] Add notes per routine log
 - [ ] Add notes per excerise log
 - [ ] Emoji/feeling per log
 - [ ] Stretch: Calendar to visualise

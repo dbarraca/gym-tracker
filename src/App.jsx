@@ -4,8 +4,7 @@ import { useState, useEffect } from "react";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import supabase from './supabase';
-import Routing from "./components/routing";
-
+import Layout from "./components/layout/Layout";
 
 export default function App() {
   const [session, setSession] = useState(null);
@@ -27,6 +26,6 @@ export default function App() {
   if (!session) {
     return <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />;
   } else {
-    return <Routing />;
+    return <Layout />;
   }
 }
